@@ -10,11 +10,9 @@ import base64
 import os
 import time
 import inspect
-import warnings
 import toml
 from datetime import datetime
 
-warnings.filterwarnings('ignore')
 
 API_DOMAIN = 'https://api.cloud.189.cn'
 UserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) ????/1.0.0 ' \
