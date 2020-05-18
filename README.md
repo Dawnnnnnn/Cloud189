@@ -44,7 +44,7 @@
 1. 克隆或[下载](https://github.com/Dawnnnnnn/Cloud189/archive/master.zip)本代码仓库
 
 ```
-git clone https://github.com/Dawnnnnnn/bilibili-toolkit.git
+git clone https://github.com/Dawnnnnnn/Cloud189.git
 
 ```
 
