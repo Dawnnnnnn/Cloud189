@@ -114,7 +114,7 @@ python3 main.py rmfile --file_id=要删除的文件id --file_name=要删除的�
 #### 分享文件
 ```bash
 python3 main.py share --file_id=要分享的文件id
-(不传参数的情况下默认列出根目录，根目录id为-11)
+(file_id为必传参数)
 ```
 
 以上命令全部可以简写，比如
