@@ -136,10 +136,13 @@ class FileTransport:
             folder_name, folder_id, parent_folder_id = self.operate.mkdir(parent_folder_id, get_file_name(filepath))
             listdir = os.walk(filepath)
             for home, dirs, files in listdir:
+                printer(f"home:{home} dirs:{dirs}  files:{files}")
                 for file in files:
+                    printer(f"文件路径:{home}/{file}，上传文件夹id{folder_id}，文件夹名称{folder_name}")
                     upload_files.append([f'{home}/{file}', folder_id])
                 for i in range(0, len(dirs)):
                     dir = dirs[i]
+                    printer(f"文件夹:{dir}，上传文件夹id{folder_id}")
                     if i == len(dirs) - 1:
                         folder_name, folder_id, parent_folder_id = self.operate.mkdir(folder_id, dir)
                     else:
