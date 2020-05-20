@@ -46,25 +46,29 @@ class Operate:
             print(msg)
 
     def mkdir(self, parent_folder_id=-11, folder_name='新建文件夹'):
-        timestamp = str(int(datetime.utcnow().timestamp() * 1000))
-        url = f"{API_DOMAIN}/open/file/createFolder.action"
-        params = f'AccessToken={self.accessToken}&Timestamp={timestamp}&parentFolderId={parent_folder_id}&folderName={folder_name}'
-        headers = {
-            "AccessToken": self.accessToken,
-            "Sign-Type": "1",
-            "User-Agent": UserAgent,
-            "Sec-Metadata": "destination="", target=subresource, site=cross-site",
-            "Timestamp": timestamp,
-            "Signature": calculate_md5_sign(params),
-            "Accept": "application/json;charset=UTF-8"
-        }
-        data = {
-            "parentFolderId": parent_folder_id,
-            "folderName": folder_name
-        }
-        response = requests.post(url, headers=headers, data=data)
-        printer(f'创建文件夹[{folder_name}]成功，文件夹id为[{response.json()["id"]}]，父文件夹id为[{parent_folder_id}]')
-        return folder_name, response.json()["id"], parent_folder_id
+        for _ in range(MAX_ATTEMPT_NUMBER):
+            try:
+                timestamp = str(int(datetime.utcnow().timestamp() * 1000))
+                url = f"{API_DOMAIN}/open/file/createFolder.action"
+                params = f'AccessToken={self.accessToken}&Timestamp={timestamp}&parentFolderId={parent_folder_id}&folderName={folder_name}'
+                headers = {
+                    "AccessToken": self.accessToken,
+                    "Sign-Type": "1",
+                    "User-Agent": UserAgent,
+                    "Sec-Metadata": "destination="", target=subresource, site=cross-site",
+                    "Timestamp": timestamp,
+                    "Signature": calculate_md5_sign(params),
+                    "Accept": "application/json;charset=UTF-8"
+                }
+                data = {
+                    "parentFolderId": parent_folder_id,
+                    "folderName": folder_name
+                }
+                response = requests.post(url, headers=headers, data=data)
+                printer(f'创建文件夹[{folder_name}]成功，文件夹id为[{response.json()["id"]}]，父文件夹id为[{parent_folder_id}]')
+                return folder_name, response.json()["id"], parent_folder_id
+            except Exception:
+                pass
 
     def delete_folder(self, folder_id, folder_name):
         timestamp = str(int(datetime.utcnow().timestamp() * 1000))

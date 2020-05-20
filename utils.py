@@ -10,9 +10,11 @@ import base64
 import os
 import time
 import inspect
+import warnings
 import toml
 from datetime import datetime
 
+warnings.filterwarnings('ignore')
 
 API_DOMAIN = 'https://api.cloud.189.cn'
 UserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) ????/1.0.0 ' \
@@ -20,6 +22,7 @@ UserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 
 SUFFIX_PARAM = 'clientType=TELEMAC&version=1.0.0&channelId=web_cloud.189.cn'
 b64map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 BI_RM = list("0123456789abcdefghijklmnopqrstuvwxyz")
+MAX_ATTEMPT_NUMBER = 3
 
 
 def int2char(a):
@@ -94,6 +97,10 @@ def get_file_size(file_path):
 
 def get_file_name(file_path):
     return file_path.strip('/').strip('\\').rsplit('\\', 1)[-1].rsplit('/', 1)[-1]
+
+
+def get_folder_name(file_path):
+    return os.path.dirname(file_path).rsplit('\\', 1)[-1].rsplit('/', 1)[-1]
 
 
 def printer(info, *args, end='\n'):
