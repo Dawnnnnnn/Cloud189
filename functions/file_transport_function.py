@@ -7,6 +7,7 @@ from .operate_function import Operate
 from utils import *
 from xml.etree import ElementTree
 import requests
+import traceback
 
 
 class ChunkIO:
@@ -78,6 +79,8 @@ class FileTransport:
                     "isLog": 0
                 }
                 response = requests.post(url, headers=headers, data=data, timeout=5)
+                printer(response.text)
+                printer(response.json())
                 upload_file_id = response.json()['uploadFileId']
                 file_upload_url = response.json()['fileUploadUrl']
                 file_commit_url = response.json()['fileCommitUrl']
@@ -85,7 +88,8 @@ class FileTransport:
                 printer(f"创建上传任务成功,上传节点为{file_upload_url.split('//')[1].split('.')[0]}")
                 return upload_file_id, file_upload_url, file_commit_url, file_data_exists
             except Exception:
-                pass
+                traceback.print_exc()
+
 
     def upload_file_data(self, file_upload_url, upload_file_id, filepath):
         url = f"{file_upload_url}?{SUFFIX_PARAM}"
@@ -139,7 +143,7 @@ class FileTransport:
                     printer(f"于[{node.findtext('createDate')}]上传文件[{node.findtext('name')}]({node.findtext('id')})成功")
                 return True
             except Exception:
-                pass
+                traceback.print_exc()
 
     def upload_file(self, filepath, parent_folder_id=-11):
         if os.path.isdir(filepath):
