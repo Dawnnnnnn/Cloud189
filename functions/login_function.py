@@ -57,7 +57,7 @@ class Login:
             "mailSuffix": "@189.cn",
             "dynamicCheck": "FALSE",
             "clientType": 10020,
-            "cb_SaveName": 0,
+            "cb_SaveName": 1,
             "isOauth2": 'false',
             "state": "",
             "paramId": param_id
