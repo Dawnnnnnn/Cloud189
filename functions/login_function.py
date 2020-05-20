@@ -62,7 +62,7 @@ class Login:
             "state": "",
             "paramId": param_id
         }
-        response = requests.post(url, data=data, headers=headers)
+        response = requests.post(url, data=data, headers=headers, timeout=5)
         redirect_url = response.json()['toUrl']
 
         url = f"{API_DOMAIN}/getSessionForPC.action?redirectURL={parse.quote(redirect_url)}&{SUFFIX_PARAM}"
@@ -70,7 +70,7 @@ class Login:
             "User-Agent": UserAgent,
             "Accept": "application/json;charset=UTF-8"
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=5)
         self.sessionKey = response.json()['sessionKey']
         self.sessionSecret = response.json()['sessionSecret']
         self.accessToken = response.json()['accessToken']
@@ -85,7 +85,7 @@ class Login:
             "Accept": "application/json",
             'Timestamp': timestamp,
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=5)
         self.accessToken = response.json()['accessToken']
         self.config['account']['sessionKey'] = self.sessionKey
         self.config['account']['sessionSecret'] = self.sessionSecret

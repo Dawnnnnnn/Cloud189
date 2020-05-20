@@ -27,7 +27,7 @@ class Operate:
             "Signature": calculate_md5_sign(params),
             "Accept": "application/json;charset=UTF-8"
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=5)
         msg = ("{:<70}{:^10}{:>10}".format(str('文件名'), str('文件id'), str('文件大小')))
         print(msg)
         for i in range(0, len(response.json()['fileListAO']['fileList'])):
@@ -64,7 +64,7 @@ class Operate:
                     "parentFolderId": parent_folder_id,
                     "folderName": folder_name
                 }
-                response = requests.post(url, headers=headers, data=data)
+                response = requests.post(url, headers=headers, data=data, timeout=5)
                 printer(f'创建文件夹[{folder_name}]成功，文件夹id为[{response.json()["id"]}]，父文件夹id为[{parent_folder_id}]')
                 return folder_name, response.json()["id"], parent_folder_id
             except Exception:
@@ -89,7 +89,7 @@ class Operate:
             "taskInfos": task_infos,
             "targetFolderId": ""
         }
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(url, headers=headers, data=data, timeout=5)
         printer(f'删除文件夹[{folder_name}]状态:{response.json()["res_message"]}')
 
     def delete_file(self, file_id, file_name):
@@ -111,7 +111,7 @@ class Operate:
             "taskInfos": task_infos,
             "targetFolderId": ""
         }
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(url, headers=headers, data=data, timeout=5)
         printer(f'删除文件[{file_name}]状态:{response.json()["res_message"]}')
 
     def share(self, file_id):
@@ -127,6 +127,6 @@ class Operate:
             "Signature": calculate_md5_sign(params),
             "Accept": "application/json;charset=UTF-8"
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=5)
         printer(
             f'创建分享链接成功，链接为[{response.json()["shareLinkList"][0]["url"]}]，提取码为[{response.json()["shareLinkList"][0]["accessCode"]}]')

@@ -46,7 +46,7 @@ class FileTransport:
         response = requests.get(url, headers=headers)
         node = ElementTree.XML(response.text)
         download_url = node.text
-        download_url = requests.get(download_url, allow_redirects=False, verify=False).headers['Location']
+        download_url = requests.get(download_url, allow_redirects=False, timeout=5).headers['Location']
         printer(f"下载链接(请使用axel/idm/aria2等工具进行直链下载):\n{download_url}")
         return download_url
 
@@ -77,7 +77,7 @@ class FileTransport:
                     "resumePolicy": 1,
                     "isLog": 0
                 }
-                response = requests.post(url, headers=headers, data=data)
+                response = requests.post(url, headers=headers, data=data, timeout=5)
                 upload_file_id = response.json()['uploadFileId']
                 file_upload_url = response.json()['fileUploadUrl']
                 file_commit_url = response.json()['fileCommitUrl']
@@ -133,7 +133,7 @@ class FileTransport:
                     "isLog": 0,
                     "ResumePolicy": 1
                 }
-                response = requests.post(url, headers=headers, data=data)
+                response = requests.post(url, headers=headers, data=data, timeout=5)
                 node = ElementTree.XML(response.text)
                 if node.text != 'error':
                     printer(f"于[{node.findtext('createDate')}]上传文件[{node.findtext('name')}]({node.findtext('id')})成功")
