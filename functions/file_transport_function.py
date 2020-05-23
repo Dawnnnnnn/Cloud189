@@ -79,17 +79,23 @@ class FileTransport:
                     "isLog": 0
                 }
                 response = requests.post(url, headers=headers, data=data, timeout=5)
-                printer(response.text)
-                printer(response.json())
-                upload_file_id = response.json()['uploadFileId']
-                file_upload_url = response.json()['fileUploadUrl']
-                file_commit_url = response.json()['fileCommitUrl']
-                file_data_exists = response.json()['fileDataExists']
-                printer(f"创建上传任务成功,上传节点为{file_upload_url.split('//')[1].split('.')[0]}")
-                return upload_file_id, file_upload_url, file_commit_url, file_data_exists
+                if response.json()['res_message'] == "UserDayFlowOverLimited":
+                    printer(f"当前登录账号每日传输流量已用尽")
+                    exit()
+                elif response.json().get('uploadFileId'):
+                    upload_file_id = response.json()['uploadFileId']
+                    file_upload_url = response.json()['fileUploadUrl']
+                    file_commit_url = response.json()['fileCommitUrl']
+                    file_data_exists = response.json()['fileDataExists']
+                    printer(f"创建上传任务成功,上传节点为{file_upload_url.split('//')[1].split('.')[0]}")
+                    return upload_file_id, file_upload_url, file_commit_url, file_data_exists
+                else:
+                    printer(response.text)
+                    printer(response.json())
+                    printer(f'未知回显{response.text},请联系开发者')
+                    exit()
             except Exception:
                 traceback.print_exc()
-
 
     def upload_file_data(self, file_upload_url, upload_file_id, filepath):
         url = f"{file_upload_url}?{SUFFIX_PARAM}"
