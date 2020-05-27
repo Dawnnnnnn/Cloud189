@@ -184,7 +184,7 @@ class FileTransport:
 
         else:
             printer(f"文件[{filepath}]进入上传流程")
-            upload_file_id, file_upload_url, file_commit_url, file_data_exists = self.create_upload_file(filepath)
+            upload_file_id, file_upload_url, file_commit_url, file_data_exists = self.create_upload_file(filepath,parent_folder_id)
             if file_data_exists == 1:
                 printer('数据存在，进入秒传流程')
                 self.upload_client_commit(file_commit_url, upload_file_id)
